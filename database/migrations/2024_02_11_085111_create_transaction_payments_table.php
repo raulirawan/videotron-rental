@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('transaction_payments', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('phone');
-            $table->string('roles');
-            $table->rememberToken();
+
+            $table->foreignId('transaction_id')->nullable()->constrained('users')->noActionOnDelete();
+            $table->string('status')->default('PENDING');
+            $table->string('payment_url')->nullable();
+            $table->integer('total_price')->nullable();
+
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('transaction_payments');
     }
 };
