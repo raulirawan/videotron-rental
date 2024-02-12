@@ -10,4 +10,12 @@ class TransactionPayment extends Model
     use HasFactory;
 
     protected $table = 'transaction_payments';
+
+    protected $fillable = [
+        'transaction_id',
+        'code',
+        'status',
+        'payment_url',
+        'total_price',
+    ];
 }

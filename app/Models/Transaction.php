@@ -11,6 +11,20 @@ class Transaction extends Model
 
     protected $table = 'transaction';
 
+    protected $fillable = [
+        'user_id',
+        'sales_id',
+        'code',
+        'booking_date',
+        'start_time',
+        'end_time',
+        'address',
+        'width',
+        'height',
+        'total_price',
+        'status',
+    ];
+
 
     public function user()
     {
@@ -19,5 +33,10 @@ class Transaction extends Model
     public function sales()
     {
         return $this->hasOne(User::class, 'id', 'sales_id');
+    }
+
+    public function payment()
+    {
+        return $this->hasMany(TransactionPayment::class,'transaction_id','id');
     }
 }

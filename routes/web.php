@@ -3,10 +3,11 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\VideotronController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('transaction', [TransactionController::class, 'index'])->name('transaction.index');
     Route::get('transaction/detail/{id}', [TransactionController::class, 'detail'])->name('transaction.detail');
+
+    Route::get('setting', [SettingController::class,'index'])->name('setting.index');
+    Route::post('setting', [SettingController::class,'update'])->name('setting.update');
 });
 
 

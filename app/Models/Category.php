@@ -11,5 +11,8 @@ class Category extends Model
 
     protected $table = 'category';
 
-
+    public function videotron()
+    {
+        return $this->hasMany(Videotron::class,'category_id','id');
+    }
 }

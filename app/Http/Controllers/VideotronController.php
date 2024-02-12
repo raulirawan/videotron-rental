@@ -19,6 +19,7 @@ class VideotronController extends Controller
         $data = new Videotron();
         $data->name = $request->name;
         $data->category_id = $request->category_id;
+        $data->description = $request->description;
         if($request->hasFile('image')) {
             $file = $request->file('image');
             $tujuan_upload = 'image/videotron/';
@@ -43,6 +44,7 @@ class VideotronController extends Controller
         $data = Videotron::findOrFail($id);
         $data->name = $request->name;
         $data->category_id = $request->category_id;
+        $data->description = $request->description;
         if($request->hasFile('image')) {
             $file = $request->file('image');
             $tujuan_upload = 'image/videotron/';

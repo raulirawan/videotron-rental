@@ -62,7 +62,9 @@
                                             <button href="" class="btn btn-info btn-sm" id="edit"
                                                 data-id="{{ $item->id }}" data-name="{{ $item->name }}"
                                                 data-category_id="{{ $item->category_id }}" data-image="{{ $item->image }}"
-                                                data-bs-toggle="modal" data-bs-target="#modal-edit">Edit</button>
+                                                data-description="{{ $item->description }}"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modal-edit">Edit</button>
                                             <a href="{{ route('videotron.delete', $item->id) }}"
                                                 onclick="return confirm('Yakin ?')" class="btn btn-danger btn-sm">Hapus</a>
                                         </td>
@@ -112,6 +114,11 @@
                                 <div class="form-group">
                                     <label for="helpInputTop">Gambar</label>
                                     <input type="file" class="form-control" name="image" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="helpInputTop">Deskripsi</label>
+                                    <textarea name="description" class="form-control" cols="30" rows="10" placeholder="Deskripsi" required></textarea>
                                 </div>
                             </div>
                         </div>
@@ -168,6 +175,10 @@
                                     <img src="" id="image" class="mt-2" style="width: 100px">
                                 </div>
 
+                                <div class="form-group">
+                                    <label for="helpInputTop">Deskripsi</label>
+                                    <textarea name="description" id="description"  class="form-control" cols="30" rows="10" placeholder="Deskripsi" required></textarea>
+                                </div>
 
                             </div>
                         </div>
@@ -207,8 +218,10 @@
                     var name = $(this).data('name');
                     var category_id = $(this).data('category_id');
                     var image = $(this).data('image');
+                    var description = $(this).data('description');
                     $('#name').val(name);
                     $('#category_id').val(category_id);
+                    $('#description').val(description);
                     $('#form-edit').attr('action', '/videotron/update/' + id);
                     if (image != '') {
                         $('#image').attr('src', image);
