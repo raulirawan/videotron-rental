@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('videotron', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('category_id')->nullable()->constrained('category')->noActionOnDelete();
 
             $table->string('name')->nullable();
             $table->string('image')->nullable();

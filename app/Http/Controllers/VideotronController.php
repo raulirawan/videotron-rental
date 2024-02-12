@@ -4,62 +4,80 @@ namespace App\Http\Controllers;
 
 use App\Models\Videotron;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class VideotronController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $videotron = Videotron::all();
+        return view('videotron.index', compact('videotron'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $data = new Videotron();
+        $data->name = $request->name;
+        $data->category_id = $request->category_id;
+        if($request->hasFile('image')) {
+            $file = $request->file('image');
+            $tujuan_upload = 'image/videotron/';
+            $nama_file = time()."_".$file->getClientOriginalName();
+            $nama_file = str_replace(' ', '', $nama_file);
+            $file->move($tujuan_upload,$nama_file);
+
+            $data->image = $tujuan_upload.$nama_file;
+        }
+        $data->save();
+
+        if($data != null) {
+            Alert::success('Success','Data Berhasil di Tambah');
+            return redirect()->route('videotron.index');
+        }else {
+            Alert::error('Error','Data Gagal di Tambah');
+            return redirect()->route('videotron.index');
+        }
+    }
+    public function update(Request $request, $id)
+    {
+        $data = Videotron::findOrFail($id);
+        $data->name = $request->name;
+        $data->category_id = $request->category_id;
+        if($request->hasFile('image')) {
+            $file = $request->file('image');
+            $tujuan_upload = 'image/videotron/';
+            $nama_file = time()."_".$file->getClientOriginalName();
+            $nama_file = str_replace(' ', '', $nama_file);
+            $file->move($tujuan_upload,$nama_file);
+            if(file_exists($data->image)) {
+                unlink($data->image);
+            }
+            $data->image = $tujuan_upload.$nama_file;
+        }
+        $data->save();
+        if($data != null) {
+            Alert::success('Success','Data Berhasil di Update');
+            return redirect()->route('videotron.index');
+        }else {
+            Alert::error('Error','Data Gagal di Update');
+            return redirect()->route('videotron.index');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Videotron $videotron)
+    public function delete($id)
     {
-        //
-    }
+        $data = Videotron::findOrFail($id);
+        if($data != null) {
+            if(file_exists($data->image)) {
+                unlink($data->image);
+            }
+            $data->delete();
+            Alert::success('Success','Data Berhasil di Hapus');
+            return redirect()->route('videotron.index');
+        }else {
+            Alert::error('Error','Data Gagal di Hapus');
+            return redirect()->route('videotron.index');
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Videotron $videotron)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Videotron $videotron)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Videotron $videotron)
-    {
-        //
     }
 }
