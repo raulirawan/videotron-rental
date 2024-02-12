@@ -51,6 +51,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('setting', [SettingController::class,'update'])->name('setting.update');
 });
 
+Route::post('/midtrans/callback', 'MidtransController@callback')->name('midtrans.callback');
+
 
 
 Auth::routes();

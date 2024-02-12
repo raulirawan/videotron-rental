@@ -16,12 +16,12 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="stats-icon purple">
-                                        <i class="iconly-boldShow"></i>
+                                        <i class="iconly-boldProfile"></i>
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <h6 class="text-muted font-semibold">Pendapatan</h6>
-                                    <h6 class="font-extrabold mb-0"></h6>
+                                    <h6 class="text-muted font-semibold">Total User</h6>
+                                    <h6 class="font-extrabold mb-0">{{ App\Models\User::where('roles','USER')->count() }}</h6>
                                 </div>
                             </div>
                         </div>
@@ -37,8 +37,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <h6 class="text-muted font-semibold">Total Pengunjung</h6>
-                                    <h6 class="font-extrabold mb-0"></h6>
+                                    <h6 class="text-muted font-semibold">Total Sales</h6>
+                                    <h6 class="font-extrabold mb-0">{{ App\Models\User::where('roles','SALES')->count() }}</h6>
                                 </div>
                             </div>
                         </div>
@@ -50,12 +50,12 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="stats-icon blue">
-                                        <i class="bi bi-house-fill" style="width: auto; height: auto;"></i>
+                                        <i class="bi bi-file-earmark-fill" style="width: auto; height: auto;"></i>
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <h6 class="text-muted font-semibold">Total Kamar</h6>
-                                    <h6 class="font-extrabold mb-0"></h6>
+                                    <h6 class="text-muted font-semibold">Total Transaction</h6>
+                                    <h6 class="font-extrabold mb-0">{{ App\Models\Transaction::count() }}</h6>
                                 </div>
                             </div>
                         </div>
@@ -71,8 +71,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <h6 class="text-muted font-semibold">Transaksi Success</h6>
-                                    <h6 class="font-extrabold mb-0"></h6>
+                                    <h6 class="text-muted font-semibold">Total Videotron</h6>
+                                    <h6 class="font-extrabold mb-0">{{ App\Models\Videotron::count() }}</h6>
                                 </div>
                             </div>
                         </div>
