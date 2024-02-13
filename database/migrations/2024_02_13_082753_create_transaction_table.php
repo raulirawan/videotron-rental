@@ -8,15 +8,15 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('transaction', function (Blueprint $table) {
-            $table->id();
-
-            $table->foreignId('user_id')->nullable()->constrained('users')->noActionOnDelete();
-            $table->foreignId('sales_id')->nullable()->constrained('users')->noActionOnDelete();
-
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id')->nullable()->index('transaction_user_id_foreign');
+            $table->unsignedBigInteger('sales_id')->nullable()->index('transaction_sales_id_foreign');
             $table->string('code')->nullable();
             $table->date('booking_date')->nullable();
             $table->string('start_time', 59)->nullable();
@@ -32,8 +32,10 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('transaction');
     }

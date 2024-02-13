@@ -8,25 +8,28 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('transaction_payments', function (Blueprint $table) {
-            $table->id();
-
-            $table->foreignId('transaction_id')->nullable()->constrained('users')->noActionOnDelete();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('transaction_id')->nullable()->index('transaction_payments_transaction_id_foreign');
+            $table->string('code', 100)->nullable();
             $table->string('status')->default('PENDING');
             $table->string('payment_url')->nullable();
             $table->integer('total_price')->nullable();
-
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('transaction_payments');
     }
