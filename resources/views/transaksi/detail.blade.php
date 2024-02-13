@@ -92,19 +92,19 @@
                             <tr>
                                 <th style="width: 400px">Confirmation Rental</th>
                                 <td>
-                                    <a href="" class="btn btn-success btn-sm">Undu COR</a>
+                                    <a href="{{ route('confirmationOfRental', $transaction->id) }}" target="_blank" class="btn btn-success btn-sm">Undu COR</a>
                                 </td>
                             </tr>
                             <tr>
                                 <th style="width: 400px">Invoice</th>
                                 <td>
-                                    <a href="" class="btn btn-success btn-sm">Undu Invoice</a>
+                                    <a href="{{ route('invoice', $transaction->id) }}" target="_blank" class="btn btn-success btn-sm">Undu Invoice</a>
                                 </td>
                             </tr>
                             <tr>
                                 <th style="width: 400px">Surat Jalan</th>
                                 <td>
-                                    <a href="" class="btn btn-success btn-sm">Undu Surat Jalan</a>
+                                    <a href="#" target="_blank" class="btn btn-success btn-sm">Undu Surat Jalan</a>
                                 </td>
                             </tr>
                         </tbody>

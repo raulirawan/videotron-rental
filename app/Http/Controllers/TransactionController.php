@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Pdf;
 use Exception;
 use Carbon\Carbon;
-use Midtrans\Snap;
 
+use Midtrans\Snap;
 use Midtrans\Config;
 use App\Models\Videotron;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Helpers\ResponseFormatter;
 use App\Models\TransactionPayment;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -24,7 +26,7 @@ class TransactionController extends Controller
     {
         if (request()->ajax()) {
             $query = Transaction::query();
-            $query->with(['user','sales']);
+            $query->with(['user', 'sales']);
             return DataTables::of($query)
                 ->filterColumn('created_at', function ($query, $keyword) {
                     $dates = explode('|', $keyword);
@@ -37,7 +39,7 @@ class TransactionController extends Controller
                     }
                 })
                 ->addColumn('action', function ($item) {
-                return '<a href="' . route('transaction.detail', $item->id) . '" class="btn btn-sm btn-primary"
+                    return '<a href="' . route('transaction.detail', $item->id) . '" class="btn btn-sm btn-primary"
                             >Detail</a>';
                 })
                 ->editColumn('status', function ($item) {
@@ -75,5 +77,25 @@ class TransactionController extends Controller
         return view('transaksi.detail', compact('transaction'));
     }
 
+    public function confirmationOfRental(Transaction $transaction)
+    {
+        $pdf = SnappyPdf::loadView('pdf.cor', compact('transaction'))->setOption('page-width', '90')
+            ->setOption('page-height', '130');
+        $pdf->setOption('margin-top', 0);
+        $pdf->setOption('margin-bottom', 0);
+        $pdf->setOption('margin-left', 0);
+        $pdf->setOption('margin-right', 0);
+        return $pdf->download('confirmation-of-rental.pdf');
+    }
 
+    public function invoice(Transaction $transaction)
+    {
+        $pdf = SnappyPdf::loadView('pdf.invoice', compact('transaction'))->setOption('page-width', '90')
+        ->setOption('page-height', '130');
+        $pdf->setOption('margin-top', 0);
+        $pdf->setOption('margin-bottom', 0);
+        $pdf->setOption('margin-left', 0);
+        $pdf->setOption('margin-right', 0);
+        return $pdf->download('invoices.pdf');
+    }
 }

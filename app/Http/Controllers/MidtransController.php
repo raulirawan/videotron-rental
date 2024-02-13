@@ -32,7 +32,7 @@ class MidtransController extends Controller
 
               $transaction = Transaction::where('id', $payment->transaction_id)->first();
 
-              $totalTransactionPaymentPaid = TransactionPayment::where('transaction_id', $transaction->id)->where('status','PAID')->count()
+              $totalTransactionPaymentPaid = TransactionPayment::where('transaction_id', $transaction->id)->where('status','PAID')->count();
 
               if($totalTransactionPaymentPaid == 0) {
                 $transaction->status = 'DOWN PAYMENT';
@@ -41,7 +41,7 @@ class MidtransController extends Controller
               }
               $transaction->save();
               $payment->save();
-              
+
               return response()->json([
                   'meta' => [
                       'code' => 200,
