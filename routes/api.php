@@ -24,17 +24,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::post('login', [AuthController::class,'login']);
-Route::post('register', [AuthController::class,'register']);
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
 
-Route::get('videotron', [VideotronController::class,'fetch'])->name('api.videotron.fetch');
-Route::get('category', [CategoryController::class,'fetch'])->name('api.category.fetch');
-Route::get('setting', [SettingController::class,'fetch']);
+Route::get('videotron', [VideotronController::class, 'fetch'])->name('api.videotron.fetch');
+Route::get('category', [CategoryController::class, 'fetch'])->name('api.category.fetch');
+Route::get('setting', [SettingController::class, 'fetch']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('update/profile', [AuthController::class ,'updateProfile']);
-    Route::post('update/password', [AuthController::class ,'updatePassword']);
-    Route::get('transaction', [TransactionController::class,'fetch']);
-    Route::post('transaction/store', [TransactionController::class,'store'])->name('api.transaction.store');
-    Route::post('transaction/payment/{transactionPaymentId}', [TransactionController::class,'payment'])->name('api.transaction.payment');
+    Route::post('update/profile', [AuthController::class, 'updateProfile']);
+    Route::post('update/password', [AuthController::class, 'updatePassword']);
+    Route::get('transaction', [TransactionController::class, 'fetch']);
+    Route::post('transaction/store', [TransactionController::class, 'store'])->name('api.transaction.store');
+    Route::post('transaction/payment/{transactionPaymentId}', [TransactionController::class, 'payment'])->name('api.transaction.payment');
+
+    Route::post('logout', [AuthController::class, 'logout']);
 });
