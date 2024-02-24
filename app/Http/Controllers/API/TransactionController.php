@@ -42,7 +42,12 @@ class TransactionController extends Controller
         $pdf->setOption('margin-left', 0);
         $pdf->setOption('margin-right', 0);
 
-        return $pdf->stream('invoices.pdf');
+        $pdfBytes = $pdf->output();
+
+        // Return the PDF bytes as a response
+        return response()->streamDownload(function () use ($pdfBytes) {
+            echo $pdfBytes;
+        }, 'document.pdf');
 
         // return ResponseFormatter::success($pdf, 'Generate Invoice');
     }
