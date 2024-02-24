@@ -18,7 +18,7 @@ class TransactionController extends Controller
 
     public function fetch()
     {
-        $transactions = Transaction::where('user_id', Auth::user()->id)->get();
+        $transactions = Transaction::with('payment')->where('user_id', Auth::user()->id)->get();
         return ResponseFormatter::success($transactions, 'List Data Transaksi');
     }
 
