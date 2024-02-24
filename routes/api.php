@@ -35,6 +35,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('update/profile', [AuthController::class, 'updateProfile']);
     Route::post('update/password', [AuthController::class, 'updatePassword']);
     Route::get('transaction', [TransactionController::class, 'fetch']);
+    Route::get('transaction/{id}', [TransactionController::class, 'fetchDetail']);
     Route::post('transaction/store', [TransactionController::class, 'store'])->name('api.transaction.store');
     Route::post('transaction/payment/{transactionPaymentId}', [TransactionController::class, 'payment'])->name('api.transaction.payment');
 

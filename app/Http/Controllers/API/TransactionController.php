@@ -21,9 +21,18 @@ class TransactionController extends Controller
         $transactions = Transaction::where('user_id', Auth::user()->id)->get();
         return ResponseFormatter::success($transactions, 'List Data Transaksi');
     }
+
+    public function fetchDetail($id)
+    {
+        $transaction = Transaction::with('payment')->where('user_id', Auth::user()->id)->where('id', $id)->first();
+        if ($transaction) {
+            return ResponseFormatter::success($transaction, 'Detail Data Transaksi');
+        }
+        return ResponseFormatter::error(null, 'Tidak Data Transaksi', 404);
+    }
     public function store(Request $request)
     {
-        $code = 'COR.INV.'. mt_rand(0000, 9999);
+        $code = 'COR.INV.' . mt_rand(0000, 9999);
 
         $transaction = Transaction::create([
             'user_id' => Auth::user()->id,
@@ -44,93 +53,95 @@ class TransactionController extends Controller
         $secondPayment = $request->total_price - $downPaymentPrice;
 
         // create payment
-        $codePaymentFirst = 'TRX.1.'.Auth::user()->id.'.'.mt_rand(0000,9999);
+        $codePaymentFirst = 'TRX.1.' . Auth::user()->id . '.' . mt_rand(0000, 9999);
         $paymentFirst = TransactionPayment::create(
             [
-            'transaction_id' => $transaction->id,
-            'code' => $codePaymentFirst,
-            'status' => 'PENDING',
-            'payment_url' => NULL,
-            'total_price' => $downPaymentPrice,
-        ]);
+                'transaction_id' => $transaction->id,
+                'code' => $codePaymentFirst,
+                'status' => 'PENDING',
+                'payment_url' => NULL,
+                'total_price' => $downPaymentPrice,
+            ]
+        );
 
         $secondPayment = TransactionPayment::create(
             [
-            'transaction_id' => $transaction->id,
-            'code' => 'TRX.2.'.Auth::user()->id.'.'.mt_rand(0000,9999),
-            'status' => 'PENDING',
-            'payment_url' => NULL,
-            'total_price' => $secondPayment,
-        ]);
+                'transaction_id' => $transaction->id,
+                'code' => 'TRX.2.' . Auth::user()->id . '.' . mt_rand(0000, 9999),
+                'status' => 'PENDING',
+                'payment_url' => NULL,
+                'total_price' => $secondPayment,
+            ]
+        );
 
-         // Konfigurasi Midtrans
-         Config::$serverKey = config('services.midtrans.serverKey');
-         Config::$isProduction = config('services.midtrans.isProduction');
-         Config::$isSanitized = config('services.midtrans.isSanitized');
-         Config::$is3ds = config('services.midtrans.is3ds');
+        // Konfigurasi Midtrans
+        Config::$serverKey = config('services.midtrans.serverKey');
+        Config::$isProduction = config('services.midtrans.isProduction');
+        Config::$isSanitized = config('services.midtrans.isSanitized');
+        Config::$is3ds = config('services.midtrans.is3ds');
 
 
-         //Membuat Transaksi Midtrans
+        //Membuat Transaksi Midtrans
 
-         $midtrans = [
-             'transaction_details' => [
-                 'order_id' => $codePaymentFirst,
-                 'gross_amount' => (int) $downPaymentPrice,
-             ],
+        $midtrans = [
+            'transaction_details' => [
+                'order_id' => $codePaymentFirst,
+                'gross_amount' => (int) $downPaymentPrice,
+            ],
 
-             'customer_details' => [
-                 'first_name' => Auth::user()->name,
-                 'email' => Auth::user()->email,
-             ],
+            'customer_details' => [
+                'first_name' => Auth::user()->name,
+                'email' => Auth::user()->email,
+            ],
 
-             'enable_payments' => ['bca_va','permata_va','bni_va','bri_va','gopay'],
-             'vtweb' => [],
-         ];
+            'enable_payments' => ['bca_va', 'permata_va', 'bni_va', 'bri_va', 'gopay'],
+            'vtweb' => [],
+        ];
 
-         //Memanggil Midtrans ke API
-         try {
-             //Ambil Halaman Payment Midtrans
-             $paymentUrl = Snap::createTransaction($midtrans)->redirect_url;
-             $paymentFirst->payment_url = $paymentUrl;
-             $paymentFirst->save();
-             //mengembalikan data ke api
-             return ResponseFormatter::success($paymentFirst, 'Transaksi Berhasil');
-         } catch (Exception $e) {
-             return ResponseFormatter::error($e->getMessage(), 'Transaksi Gagal');
-         }
+        //Memanggil Midtrans ke API
+        try {
+            //Ambil Halaman Payment Midtrans
+            $paymentUrl = Snap::createTransaction($midtrans)->redirect_url;
+            $paymentFirst->payment_url = $paymentUrl;
+            $paymentFirst->save();
+            //mengembalikan data ke api
+            return ResponseFormatter::success($paymentFirst, 'Transaksi Berhasil');
+        } catch (Exception $e) {
+            return ResponseFormatter::error($e->getMessage(), 'Transaksi Gagal');
+        }
     }
 
     public function payment($transactionPaymentId)
     {
         $payment = TransactionPayment::find($transactionPaymentId);
 
-        if($payment->status == 'PENDING' && $payment->payment_url != NULL) {
+        if ($payment->status == 'PENDING' && $payment->payment_url != NULL) {
             return ResponseFormatter::success($payment, 'Transaksi Berhasil');
         }
 
-         // Konfigurasi Midtrans
-         Config::$serverKey = config('services.midtrans.serverKey');
-         Config::$isProduction = config('services.midtrans.isProduction');
-         Config::$isSanitized = config('services.midtrans.isSanitized');
-         Config::$is3ds = config('services.midtrans.is3ds');
+        // Konfigurasi Midtrans
+        Config::$serverKey = config('services.midtrans.serverKey');
+        Config::$isProduction = config('services.midtrans.isProduction');
+        Config::$isSanitized = config('services.midtrans.isSanitized');
+        Config::$is3ds = config('services.midtrans.is3ds');
 
-         //Membuat Transaksi Midtrans
-         $midtrans = [
-             'transaction_details' => [
-                 'order_id' => $payment->code,
-                 'gross_amount' => (int) $payment->total_price,
-             ],
+        //Membuat Transaksi Midtrans
+        $midtrans = [
+            'transaction_details' => [
+                'order_id' => $payment->code,
+                'gross_amount' => (int) $payment->total_price,
+            ],
 
-             'customer_details' => [
-                 'first_name' => Auth::user()->name,
-                 'email' => Auth::user()->email,
-             ],
+            'customer_details' => [
+                'first_name' => Auth::user()->name,
+                'email' => Auth::user()->email,
+            ],
 
-             'enable_payments' => ['bca_va','permata_va','bni_va','bri_va','gopay'],
-             'vtweb' => [],
-         ];
+            'enable_payments' => ['bca_va', 'permata_va', 'bni_va', 'bri_va', 'gopay'],
+            'vtweb' => [],
+        ];
 
-         try {
+        try {
             //Ambil Halaman Payment Midtrans
             $paymentUrl = Snap::createTransaction($midtrans)->redirect_url;
             $payment->payment_url = $paymentUrl;
