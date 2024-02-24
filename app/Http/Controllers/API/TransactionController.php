@@ -42,8 +42,9 @@ class TransactionController extends Controller
         $pdf->setOption('margin-left', 0);
         $pdf->setOption('margin-right', 0);
 
-        return ResponseFormatter::success($pdf, 'Generate Invoice');
-        // return $pdf->download('invoices.pdf');
+        return $pdf->stream('invoices.pdf');
+
+        // return ResponseFormatter::success($pdf, 'Generate Invoice');
     }
     public function store(Request $request)
     {
