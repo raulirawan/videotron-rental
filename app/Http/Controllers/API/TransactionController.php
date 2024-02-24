@@ -12,6 +12,7 @@ use App\Helpers\ResponseFormatter;
 use App\Models\TransactionPayment;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 
 class TransactionController extends Controller
 {
@@ -29,6 +30,20 @@ class TransactionController extends Controller
             return ResponseFormatter::success($transaction, 'Detail Data Transaksi');
         }
         return ResponseFormatter::error(null, 'Tidak Data Transaksi', 404);
+    }
+
+    public function invoice($id)
+    {
+        $transaction = Transaction::findOrFail($id);
+        $pdf = SnappyPdf::loadView('pdf.invoice', compact('transaction'))->setOption('page-width', '90')
+            ->setOption('page-height', '130');
+        $pdf->setOption('margin-top', 0);
+        $pdf->setOption('margin-bottom', 0);
+        $pdf->setOption('margin-left', 0);
+        $pdf->setOption('margin-right', 0);
+
+        return ResponseFormatter::success($pdf, 'Generate Invoice');
+        // return $pdf->download('invoices.pdf');
     }
     public function store(Request $request)
     {
