@@ -51,8 +51,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('setting', [SettingController::class, 'index'])->name('setting.index');
     Route::post('setting', [SettingController::class, 'update'])->name('setting.update');
 
-    Route::get('confirmation-rental/{transaction}', [TransactionController::class, 'confirmationOfRental'])->name('confirmationOfRental');
+    Route::get('confirmation-rentals/{transaction}', [TransactionController::class, 'confirmationOfRental'])->name('confirmationOfRental');
     Route::get('invoice/{transaction}', [TransactionController::class, 'invoice'])->name('invoice');
+    Route::get('surat-jalan/{transaction}', [TransactionController::class, 'suratJalan'])->name('surat-jalan');
 });
 
 Route::post('/midtrans/callback', [MidtransController::class, 'callback'])->name('midtrans.callback');

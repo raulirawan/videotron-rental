@@ -104,7 +104,7 @@
                             <tr>
                                 <th style="width: 400px">Surat Jalan</th>
                                 <td>
-                                    <a href="#" target="_blank" class="btn btn-success btn-sm">Undu Surat Jalan</a>
+                                    <a href="{{ route('surat-jalan', $transaction->id) }}" target="_blank" class="btn btn-success btn-sm">Undu Surat Jalan</a>
                                 </td>
                             </tr>
                         </tbody>

@@ -79,13 +79,13 @@ class TransactionController extends Controller
 
     public function confirmationOfRental(Transaction $transaction)
     {
-        $pdf = SnappyPdf::loadView('pdf.cor', compact('transaction'))->setOption('page-width', '90')
+        $pdf = SnappyPdf::loadView('pdf.cor-new', compact('transaction'))->setOption('page-width', '90')
             ->setOption('page-height', '130');
         $pdf->setOption('margin-top', 0);
         $pdf->setOption('margin-bottom', 0);
         $pdf->setOption('margin-left', 0);
         $pdf->setOption('margin-right', 0);
-        return $pdf->download('confirmation-of-rental.pdf');
+        return $pdf->download('confirmation-of-rental-'.time().'.pdf');
     }
 
     public function invoice(Transaction $transaction)
@@ -97,5 +97,15 @@ class TransactionController extends Controller
         $pdf->setOption('margin-left', 0);
         $pdf->setOption('margin-right', 0);
         return $pdf->download('invoices.pdf');
+    }
+    public function suratJalan(Transaction $transaction)
+    {
+        $pdf = SnappyPdf::loadView('pdf.surat-jalan', compact('transaction'))->setOption('page-width', '90')
+        ->setOption('page-height', '130');
+        $pdf->setOption('margin-top', 0);
+        $pdf->setOption('margin-bottom', 0);
+        $pdf->setOption('margin-left', 0);
+        $pdf->setOption('margin-right', 0);
+        return $pdf->download('surat-jalan.pdf');
     }
 }

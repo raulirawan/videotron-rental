@@ -42,6 +42,7 @@ class TransactionController extends Controller
         $pdf->setOption('margin-left', 0);
         $pdf->setOption('margin-right', 0);
 
+
         $pdfBytes = $pdf->output();
 
         // Return the PDF bytes as a response
