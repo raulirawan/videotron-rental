@@ -42,12 +42,20 @@
                                 <td>{{ $transaction->booking_date ?? '-' }}</td>
                             </tr>
                             <tr>
+                                <th style="width: 400px">Tanggal Selesai</th>
+                                <td>{{ $transaction->end_date ?? '-' }}</td>
+                            </tr>
+                            <tr>
                                 <th style="width: 400px">Kode Transaksi</th>
                                 <td>{{ $transaction->code ?? '-' }}</td>
                             </tr>
                             <tr>
                                 <th style="width: 400px">Nama Penyewa</th>
-                                <td>{{ $transaction->user->name ?? '-' }}</td>
+                                <td>{{ $transaction->name_order ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <th style="width: 400px">Nomor Telepon</th>
+                                <td>{{ $transaction->phone ?? '-' }}</td>
                             </tr>
                             <tr>
                                 <th style="width: 400px">Nama Sales</th>
@@ -92,19 +100,19 @@
                             <tr>
                                 <th style="width: 400px">Confirmation Rental</th>
                                 <td>
-                                    <a href="{{ route('confirmationOfRental', $transaction->id) }}" target="_blank" class="btn btn-success btn-sm">Undu COR</a>
+                                    <a href="{{ route('confirmationOfRental', $transaction->id) }}" target="_blank" class="btn btn-success btn-sm">Unduh COR</a>
                                 </td>
                             </tr>
                             <tr>
                                 <th style="width: 400px">Invoice</th>
                                 <td>
-                                    <a href="{{ route('invoice', $transaction->id) }}" target="_blank" class="btn btn-success btn-sm">Undu Invoice</a>
+                                    <a href="{{ route('invoice', $transaction->id) }}" target="_blank" class="btn btn-success btn-sm">Unduh Invoice</a>
                                 </td>
                             </tr>
                             <tr>
                                 <th style="width: 400px">Surat Jalan</th>
                                 <td>
-                                    <a href="{{ route('surat-jalan', $transaction->id) }}" target="_blank" class="btn btn-success btn-sm">Undu Surat Jalan</a>
+                                    <a href="{{ route('surat-jalan', $transaction->id) }}" target="_blank" class="btn btn-success btn-sm">Unduh Surat Jalan</a>
                                 </td>
                             </tr>
                         </tbody>

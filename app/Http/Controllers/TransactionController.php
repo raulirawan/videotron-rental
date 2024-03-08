@@ -26,7 +26,7 @@ class TransactionController extends Controller
     {
         if (request()->ajax()) {
             $query = Transaction::query();
-            $query->with(['user', 'sales']);
+            $query->with(['user', 'sales'])->orderByRaw("FIELD(status, 'DOWN PAYMENT', 'PENDING', 'PAID')")->orderBy('updated_at','DESC');
             return DataTables::of($query)
                 ->filterColumn('created_at', function ($query, $keyword) {
                     $dates = explode('|', $keyword);
@@ -57,7 +57,7 @@ class TransactionController extends Controller
                     return Carbon::parse($item->created_at)->format('d F Y H:i:s');
                 })
                 ->editColumn('booking_date', function ($item) {
-                    return Carbon::parse($item->booking_date)->format('d F Y');
+                    return Carbon::parse($item->booking_date)->format('d F Y').' '.$item->start_time;
                 })
                 ->editColumn('width', function ($item) {
                     return $item->width . ' X ' . $item->height . ' M';
